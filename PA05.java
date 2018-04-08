@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.util.*;
 
 public class PA05 {
+
+  public static ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+
   public static void main(String[] args){
     JFrame window = new JFrame("PA05");
-    List<Ingredient> ingredients = new ArrayList<Ingredient>();
 
 
     MouseDrawDemo drawWidget1 = new MouseDrawDemo();
@@ -20,12 +22,22 @@ public class PA05 {
 
     JPanel buttons = new JPanel(new GridLayout(0,1));
     JButton clear = new JButton("Clear");
-    JButton newIngredent = new JButton("New Ingredent");
+    JButton newIngredient = new JButton("New Ingredient");
     buttons.add(clear);
-    buttons.add(newIngredent);
+    buttons.add(newIngredient);
     content.add(buttons, BorderLayout.LINE_START);
 
     content.add(newTable(), BorderLayout.CENTER);
+
+    JPanel inputs = new JPanel(new GridLayout(0,1));
+    JTextField ingName = new JTextField("Enter Ingredient Name");
+    JTextField ingType = new JTextField("Enter Ingredient Type");
+    JTextField ingCost = new JTextField("Enter Ingredient Cost");
+    inputs.add(ingName);
+    inputs.add(ingType);
+    inputs.add(ingCost);
+    content.add(inputs, BorderLayout.LINE_END);
+
 
     /*content.add(drawWidget1);
     content.add(clear);
@@ -48,22 +60,38 @@ public class PA05 {
       }
     });
 
-    newIngredent.addActionListener(new ActionListener(){
+    newIngredient.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
-        addToTable();
+        addIngredient(ingName, ingType, ingCost);
       }
     });
+  }//main
 
-  }
+    private static void addIngredient(JTextField ingName, JTextField ingType, JTextField ingCost){
+      printIngredients();
+      ingredients.add(new Ingredient(ingName.getText(), ingType.getText(), Double.parseDouble(ingCost.getText())));
+      //TODO add try catch for ingredient cost
+      ingName.setText("Enter Ingredient Name");
+      ingType.setText("Enter Ingredient Type");
+      ingCost.setText("Enter Ingredient Cost");
+      printIngredients();
+      //TODO add redraw table
+    }
 
-  private static JTable newTable(){
-    String[] columnNames = {"Name of Ingredient",
-                        "Type of Ingredient",
-                        "Cost Per Unit"};
-    Object[][] data = {
-                        {"Eggs", "Organic",
-                         10},
-                        };
-    return new JTable(data, columnNames);
-  }
-}
+    private static JTable newTable(){
+      String[] columnNames = {"Name of Ingredient",
+                          "Type of Ingredient",
+                          "Cost Per Unit"};
+      Object[][] data = {
+                          {"Eggs", "Organic",
+                           10},
+                          };
+      return new JTable(data, columnNames);
+    }
+
+    private static void printIngredients(){
+      for(Ingredient i : ingredients){
+        System.out.println(i.toString());
+      }
+    }
+}//class

@@ -9,15 +9,26 @@ public class Ingredient{
     this.costperunit = c;
   }
 
-  public getName(){
+  public Ingredient(){
+    this.name = "default name";
+    this.type = "default type";
+    this.costperunit = 0;
+  }
+
+
+  public String getName(){
     return this.name;
   }
 
-  public getType(){
+  public String getType(){
     return this.type;
   }
 
-  public getCost(){
+  public double getCost(){
     return this.costperunit;
+  }
+
+  public String toString() {
+    return this.name + " | " + this.type + " | " + this.costperunit;
   }
 }
