@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import java.text.*;
 
 public class PA05 {
 
@@ -27,12 +28,13 @@ public class PA05 {
     buttons.add(newIngredient);
     content.add(buttons, BorderLayout.LINE_START);
 
-    content.add(newTable(), BorderLayout.CENTER);
+    JTable tableModel = newTable();
+    content.add(tableModel, BorderLayout.CENTER);
 
     JPanel inputs = new JPanel(new GridLayout(0,1));
     JTextField ingName = new JTextField("Enter Ingredient Name");
     JTextField ingType = new JTextField("Enter Ingredient Type");
-    JTextField ingCost = new JTextField("Enter Ingredient Cost");
+    JFormattedTextField ingCost = new JFormattedTextField(new DecimalFormat());
     inputs.add(ingName);
     inputs.add(ingType);
     inputs.add(ingCost);
@@ -63,19 +65,19 @@ public class PA05 {
     newIngredient.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
         addIngredient(ingName, ingType, ingCost);
+        tableModel.updateUI();
       }
     });
   }//main
 
-    private static void addIngredient(JTextField ingName, JTextField ingType, JTextField ingCost){
+    private static void addIngredient(JTextField ingName, JTextField ingType, JFormattedTextField ingCost){
       printIngredients();
-      ingredients.add(new Ingredient(ingName.getText(), ingType.getText(), Double.parseDouble(ingCost.getText())));
+      ingredients.add(new Ingredient(ingName.getText(), ingType.getText(), //fuck));
       //TODO add try catch for ingredient cost
       ingName.setText("Enter Ingredient Name");
       ingType.setText("Enter Ingredient Type");
       ingCost.setText("Enter Ingredient Cost");
       printIngredients();
-      //TODO add redraw table
     }
 
     private static JTable newTable(){
@@ -86,6 +88,8 @@ public class PA05 {
                           {"Eggs", "Organic",
                            10},
                           };
+      JTable table = new JTable(data, columnNames);
+      table.setRowSelectionAllowed(false);
       return new JTable(data, columnNames);
     }
 
