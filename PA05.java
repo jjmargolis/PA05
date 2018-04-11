@@ -7,6 +7,8 @@ import java.text.*;
 public class PA05 {
 
   public static ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+  public static listModel = new DefaultListModel();
+
 
   public static void main(String[] args){
     JFrame window = new JFrame("PA05");
@@ -28,14 +30,13 @@ public class PA05 {
     buttons.add(newIngredient);
     content.add(buttons, BorderLayout.LINE_START);
 
-    JTable tableModel = newTable();
-    content.add(tableModel, BorderLayout.CENTER);
+    JList list = new JList(listModel);
+    content.add(list, BorderLayout.CENTER);
 
     JPanel inputs = new JPanel(new GridLayout(0,1));
     JTextField ingName = new JTextField("Enter Ingredient Name");
     JTextField ingType = new JTextField("Enter Ingredient Type");
-    JFormattedTextField ingCost = new JFormattedTextField(new DecimalFormat());
-    inputs.add(ingName);
+    JTextField ingCost = new JTextField("Enter Ingredient Cost");
     inputs.add(ingType);
     inputs.add(ingCost);
     content.add(inputs, BorderLayout.LINE_END);
@@ -70,9 +71,10 @@ public class PA05 {
     });
   }//main
 
-    private static void addIngredient(JTextField ingName, JTextField ingType, JFormattedTextField ingCost){
+    private static void addIngredient(JTextField ingName, JTextField ingType, JTextField ingCost){
       printIngredients();
-      ingredients.add(new Ingredient(ingName.getText(), ingType.getText(), //fuck));
+      ingredients.add(new Ingredient(ingName.getText(), ingType.getText(), Double.parseDouble(ingCost.getText())));
+      listModel.addElement(ingName.getText());
       //TODO add try catch for ingredient cost
       ingName.setText("Enter Ingredient Name");
       ingType.setText("Enter Ingredient Type");
@@ -80,22 +82,17 @@ public class PA05 {
       printIngredients();
     }
 
-    private static JTable newTable(){
-      String[] columnNames = {"Name of Ingredient",
-                          "Type of Ingredient",
-                          "Cost Per Unit"};
-      Object[][] data = {
-                          {"Eggs", "Organic",
-                           10},
-                          };
-      JTable table = new JTable(data, columnNames);
-      table.setRowSelectionAllowed(false);
-      return new JTable(data, columnNames);
-    }
-
     private static void printIngredients(){
       for(Ingredient i : ingredients){
         System.out.println(i.toString());
       }
+    }
+
+    public static Object[] makeArray(){
+      Object[] output = new Object[ingredients.size()];
+      for(int x = 0; x < ingredients.size(); x++){
+        output[x] = ingredients.get(x).getName();
+      }
+      return output;
     }
 }//class
